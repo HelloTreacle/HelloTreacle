@@ -24,12 +24,12 @@ namespace HelloTreacle
             Console.WriteLine("Begin Request");
 
             //run all policies in order
-
             var policiesStack = new Stack<RequestPolicy>(policies);
 
             while (policiesStack.Count > 0)
             {
                 var requestPolicy = policiesStack.Pop();
+
                 var policyViolation = await requestPolicy.Run(requestStore, context);
 
                 if (policyViolation)
