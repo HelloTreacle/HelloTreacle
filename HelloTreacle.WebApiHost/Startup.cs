@@ -30,12 +30,11 @@ namespace HelloTreacle.WebApiHost
                     new[] { "LocalIpAddress" },
                     ctx =>
                     {
-                        ctx.Response.StatusCode = 401;
-                        ctx.Response.Headers.Set("Location", "http://www.google.com");
+                        ctx.Response.Redirect("http://www.google.com");
                     })
             };
 
-            appBuilder.UseHelloTreacle(new InMemoryRequestStore(), requestPolicies);
+            appBuilder.UseHelloTreacle(requestPolicies);
 
             appBuilder.UseWebApi(config);
         }
