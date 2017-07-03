@@ -8,6 +8,9 @@ namespace HelloTreacle.Policies
 {
     public class RequestPolicy
     {
+        private RequestPolicy()
+        { }
+
         public RequestPolicy(TimeSpan timeSpan, int frequencyThreshold, IEnumerable<string> requestProperties, Action<IOwinContext> onPolicyViolation)
         {
             TimeSpan = timeSpan;
@@ -17,11 +20,14 @@ namespace HelloTreacle.Policies
         }
 
         public TimeSpan TimeSpan { get; }
+
         public int FrequencyThreshold { get; }
 
         public IEnumerable<string> RequestProperties { get; }
 
         public Action<IOwinContext> OnPolicyViolation { get; }
+
+        public IEnumerable<Func<IOwinRequest, bool>> Prerequisites { get; set; }
 
         public async Task<bool> Run(RequestStore requestStore, IOwinContext context)
         {
@@ -34,6 +40,14 @@ namespace HelloTreacle.Policies
             }
 
             return false;
+        }
+
+        public static RequestPolicy WithPrerequisites(params Func<IOwinRequest, bool>[] prerequisiteFunc)
+        {
+            return new RequestPolicy
+            {
+                Prerequisites = prerequisiteFunc
+            };
         }
     }
 }

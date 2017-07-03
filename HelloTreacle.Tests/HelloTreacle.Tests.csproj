@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Policies\RequestPolicyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\Properties\Retrieval\DefaultRequestPropertyRetrieverTests.cs" />
     <Compile Include="Requests\Store\InMemoryRequestStoreTests.cs" />
