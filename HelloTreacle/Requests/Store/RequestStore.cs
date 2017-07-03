@@ -15,6 +15,8 @@ namespace HelloTreacle.Requests.Store
             this.requestPropertyRetriever = requestPropertyRetriever;
         }
 
+        public IEnumerable<IEnumerable<string>> PropertyKeys { get; set; }
+
         public Task Store(IOwinRequest request)
         {
             var requestRepresentation = new RequestRepresentation();

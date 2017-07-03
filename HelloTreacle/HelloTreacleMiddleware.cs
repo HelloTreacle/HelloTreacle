@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HelloTreacle.Policies;
 using HelloTreacle.Requests.Store;
@@ -11,12 +12,17 @@ namespace HelloTreacle
     {
         private readonly RequestStore requestStore;
         private readonly IEnumerable<RequestPolicy> policies;
+        private readonly IEnumerable<IEnumerable<string>> propertyKeysUsedInAcrossPolicies;
 
-        public HelloTreacleMiddleware(OwinMiddleware next, RequestStore requestStore, IEnumerable<RequestPolicy> policies)
+        public HelloTreacleMiddleware(OwinMiddleware next, RequestStore requestStore, params RequestPolicy[] policies)
             : base(next)
         {
+            //todo: guard against requestStore and policies being null
+
             this.requestStore = requestStore;
             this.policies = policies;
+
+            this.propertyKeysUsedInAcrossPolicies = policies.Select(x => x.RequestProperties).Distinct();
         }
 
         public override async Task Invoke(IOwinContext context)
