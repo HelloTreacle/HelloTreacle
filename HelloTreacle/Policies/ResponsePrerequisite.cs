@@ -6,7 +6,7 @@
         {
             public static Prerequisite Equals(int statusCode)
             {
-                return new Prerequisite(owinResponse => owinResponse.StatusCode == statusCode, true);
+                return new Prerequisite(owinResponse => owinResponse.StatusCode == statusCode);
             }
         }
     }

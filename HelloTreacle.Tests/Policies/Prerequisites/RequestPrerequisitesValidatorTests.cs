@@ -94,17 +94,11 @@ namespace HelloTreacle.Tests.Policies.Prerequisites
         {
             public bool Validate(IOwinRequest request, IEnumerable<Prerequisite> prerequisites)
             {
-                var requestPrerequisites = prerequisites.Select(x => new { Condition = x.RequestCondition, x.PositiveOutcome });
+                var requestPrerequisites = prerequisites.Select(x => x.RequestCondition);
 
-                var results = requestPrerequisites.Select(p => new
-                {
-                    Result = p.Condition.Invoke(request),
-                    p.PositiveOutcome
-                });
+                var results = requestPrerequisites.Select(p => p.Invoke(request));
 
-                var outcomes = requestPrerequisites.Select(x => x.PositiveOutcome).Distinct();
-
-                return results.Any(res => res.Result == res.PositiveOutcome);
+                return results.Any(res => res.Equals(true));
             }
         }
     }
