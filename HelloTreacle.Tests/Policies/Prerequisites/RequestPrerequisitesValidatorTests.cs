@@ -55,11 +55,9 @@ namespace HelloTreacle.Tests.Policies.Prerequisites
                         RequestPrerequisite.Path.NotEquals("/test3")
                     );
 
-                Assert.IsFalse(Validator.Validate(OwinRequestWithPath("/not_test"), requestPolicy.Prerequisites));
-                Assert.IsFalse(Validator.Validate(OwinRequestWithPath("/test3"), requestPolicy.Prerequisites));
-
                 Assert.IsTrue(Validator.Validate(OwinRequestWithPath("/test"), requestPolicy.Prerequisites));
                 Assert.IsTrue(Validator.Validate(OwinRequestWithPath("/test2"), requestPolicy.Prerequisites));
+                Assert.IsFalse(Validator.Validate(OwinRequestWithPath("/test3"), requestPolicy.Prerequisites));
             }
 
             private static IOwinRequest OwinRequestWithPath(string path)
@@ -74,9 +72,15 @@ namespace HelloTreacle.Tests.Policies.Prerequisites
             {
                 var requestPrerequisites = prerequisites.Select(x => new { Condition = x.RequestCondition, x.PositiveOutcome });
 
-                var results = requestPrerequisites.Select(p => new { Result = p.Condition.Invoke(request), p.PositiveOutcome });
+                var results = requestPrerequisites.Select(p => new
+                {
+                    Result = p.Condition.Invoke(request),
+                    p.PositiveOutcome
+                });
 
-                return results.All(res => res.Result == res.PositiveOutcome);
+                var outcomes = requestPrerequisites.Select(x => x.PositiveOutcome).Distinct();
+
+                return results.Any(res => res.Result == res.PositiveOutcome);
             }
         }
     }

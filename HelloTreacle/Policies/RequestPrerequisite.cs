@@ -11,7 +11,7 @@
 
             public static Prerequisite NotEquals(string path)
             {
-                return new Prerequisite(owinRequest => owinRequest.Path.Value != path, false);
+                return new Prerequisite(owinRequest => owinRequest.Path.Value != path, true);
             }
         }
     }
