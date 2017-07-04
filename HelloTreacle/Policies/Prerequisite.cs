@@ -18,6 +18,7 @@ namespace HelloTreacle.Policies
         }
 
         public Func<IOwinRequest, bool> RequestCondition { get; }
+
         public bool PositiveOutcome { get; }
 
         public Func<IOwinResponse, bool> ResponseCondition { get; }
