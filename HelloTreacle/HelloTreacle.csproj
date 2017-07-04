@@ -50,7 +50,6 @@
     <Compile Include="HelloTreacleMiddlewareHandler.cs" />
     <Compile Include="Policies\Prerequisite.cs" />
     <Compile Include="Policies\PrerequisiteOperator.cs" />
-    <Compile Include="Policies\RequestPath.cs" />
     <Compile Include="Policies\RequestPolicy.cs" />
     <Compile Include="Policies\RequestPrerequisite.cs" />
     <Compile Include="Policies\ResponsePrerequisite.cs" />
