@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="HelloTreacleMiddleware.cs" />
     <Compile Include="HelloTreacleMiddlewareHandler.cs" />
+    <Compile Include="Policies\PrerequisiteOperator.cs" />
+    <Compile Include="Policies\RequestPath.cs" />
     <Compile Include="Policies\RequestPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\Properties\Retrieval\DefaultRequestPropertyRetriever.cs" />

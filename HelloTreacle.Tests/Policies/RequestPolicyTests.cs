@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using HelloTreacle.Policies;
 using Microsoft.Owin;
 using NUnit.Framework;
@@ -26,60 +25,51 @@ namespace HelloTreacle.Tests.Policies
                 [Test]
                 public void Single_RequestPathEquals()
                 {
-                    var result = RequestPolicy
+                    var requestPolicy = RequestPolicy
                         .WithPrerequisites(
                             RequestPath.Equals("/test")
                         );
 
-                    var requestPolicyPrerequisites = result.Prerequisites;
-
-                    Assert.That(requestPolicyPrerequisites, Is.Not.Null);
-
-                    var requestPolicyPrerequisite = requestPolicyPrerequisites.FirstOrDefault();
-
-                    Func<IOwinRequest, bool> checker = i => i.Path.HasValue && i.Path.Value == "/test";
-
-                    //rubbish assertion!
-                    Assert.AreEqual(checker.ToString(), requestPolicyPrerequisite.ToString());
+                    Assert.IsFalse(ValidatePath(requestPolicy, "/not_test"));
+                    Assert.IsTrue(ValidatePath(requestPolicy, "/test"));
                 }
 
                 [Test]
                 public void Multiple_RequestPathEquals()
                 {
-                    var result = RequestPolicy
+                    var requestPolicy = RequestPolicy
                         .WithPrerequisites(
+                            PrerequisiteOperator.Or,
                             RequestPath.Equals("/test"),
                             RequestPath.Equals("/test2")
                         );
 
-                    var requestPolicyPrerequisites = result.Prerequisites;
-
-                    Assert.That(requestPolicyPrerequisites, Is.Not.Null);
-
-                    var requestPolicyPrerequisite = requestPolicyPrerequisites.FirstOrDefault();
-
-                    Func<IOwinRequest, bool> checker = i => i.Path.HasValue && i.Path.Value == "/test";
-
-                    Assert.Fail("Not yet implemented");
+                    Assert.IsFalse(ValidatePath(requestPolicy, "/not_test"));
+                    Assert.IsTrue(ValidatePath(requestPolicy, "/test"));
+                    Assert.IsTrue(ValidatePath(requestPolicy, "/test2"));
                 }
 
                 [Test]
                 public void Single_RequestPathNotEquals()
                 {
-                    var result = RequestPolicy
+                    var requestPolicy = RequestPolicy
                         .WithPrerequisites(
                             RequestPath.NotEquals("/test")
                         );
 
-                    var requestPolicyPrerequisites = result.Prerequisites;
+                    Assert.IsFalse(ValidatePath(requestPolicy, "/test"));
+                    Assert.IsTrue(ValidatePath(requestPolicy, "/not_test"));
+                }
 
-                    Assert.That(requestPolicyPrerequisites, Is.Not.Null);
+                private bool ValidatePath(RequestPolicy policy, string path)
+                {
+                    var owinRequest = new OwinRequest { Path = new PathString(path) };
 
-                    var requestPolicyPrerequisite = requestPolicyPrerequisites.FirstOrDefault();
+                    var valids = policy.Prerequisites.Select(p => p.Invoke(owinRequest));
 
-                    Func<IOwinRequest, bool> checker = i => i.Path.HasValue && i.Path.Value == "/test";
-
-                    Assert.Fail("Not yet implemented");
+                    return policy.PrerequisitesOperator == PrerequisiteOperator.Or 
+                        ? valids.Any(x => x.Equals(true)) 
+                        : valids.All(x => x.Equals(true));
                 }
             }
         }

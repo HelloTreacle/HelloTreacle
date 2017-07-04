@@ -42,12 +42,20 @@ namespace HelloTreacle.Policies
             return false;
         }
 
-        public static RequestPolicy WithPrerequisites(params Func<IOwinRequest, bool>[] prerequisiteFunc)
+        public static RequestPolicy WithPrerequisites(params Func<IOwinRequest, bool>[] prerequisites)
+        {
+            return WithPrerequisites(PrerequisiteOperator.Or, prerequisites);
+        }
+
+        public static RequestPolicy WithPrerequisites(PrerequisiteOperator @operator, params Func<IOwinRequest, bool>[] prerequisiteFunc)
         {
             return new RequestPolicy
             {
+                PrerequisitesOperator = @operator,
                 Prerequisites = prerequisiteFunc
             };
         }
+
+        public PrerequisiteOperator PrerequisitesOperator { get; set; }
     }
 }
