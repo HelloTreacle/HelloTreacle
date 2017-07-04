@@ -42,11 +42,11 @@ namespace HelloTreacle
                     return;
             }
 
-            //store the request
-            await requestStore.Store(context.Request);
-
             //carry on
             await Next.Invoke(context);
+
+            //store the request
+            await requestStore.Store(context.Request);
 
             Console.WriteLine("End Request");
         }

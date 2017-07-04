@@ -27,8 +27,6 @@ namespace HelloTreacle.Policies
 
         public Action<IOwinContext> OnPolicyViolation { get; }
 
-        public IEnumerable<Func<IOwinRequest, bool>> Prerequisites { get; set; }
-
         public async Task<bool> Run(RequestStore requestStore, IOwinContext context)
         {
             var frequency = await requestStore.QueryDuplicateFrequency(TimeSpan, RequestProperties);
@@ -42,20 +40,16 @@ namespace HelloTreacle.Policies
             return false;
         }
 
-        public static RequestPolicy WithPrerequisites(params Func<IOwinRequest, bool>[] prerequisites)
-        {
-            return WithPrerequisites(PrerequisiteOperator.Or, prerequisites);
-        }
+        public IEnumerable<Prerequisite> Prerequisites { get; set; }
 
-        public static RequestPolicy WithPrerequisites(PrerequisiteOperator @operator, params Func<IOwinRequest, bool>[] prerequisiteFunc)
+        public static RequestPolicy WithPrerequisites(params Prerequisite[] prerequisites)
         {
-            return new RequestPolicy
+            var requestPolicy = new RequestPolicy
             {
-                PrerequisitesOperator = @operator,
-                Prerequisites = prerequisiteFunc
+                Prerequisites = prerequisites
             };
-        }
 
-        public PrerequisiteOperator PrerequisitesOperator { get; set; }
+            return requestPolicy;
+        }
     }
 }

@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using System.Web.Http;
 using HelloTreacle.Policies;
 using HelloTreacle.Requests.Store;
+using Microsoft.Owin;
 using Owin;
 
 namespace HelloTreacle.WebApiHost
@@ -34,7 +37,15 @@ namespace HelloTreacle.WebApiHost
                     })
             };
 
+
             appBuilder.UseHelloTreacle(requestPolicies);
+
+            //set as unauth
+            appBuilder.Use(async (context, next) =>
+            {
+                if (context.Request.QueryString.Value.Contains("unauth"))
+                    context.Response.StatusCode = 401;
+            });
 
             appBuilder.UseWebApi(config);
         }
