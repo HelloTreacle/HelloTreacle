@@ -60,6 +60,30 @@ namespace HelloTreacle.Tests.Policies.Prerequisites
                 Assert.IsFalse(Validator.Validate(OwinRequestWithPath("/test3"), requestPolicy.Prerequisites));
             }
 
+            [Test]
+            public void Single_RequestPathContains()
+            {
+                var requestPolicy = RequestPolicy
+                    .WithPrerequisites(
+                        RequestPrerequisite.Path.Contains("test")
+                    );
+
+                Assert.IsTrue(Validator.Validate(OwinRequestWithPath("/something/containing/test"), requestPolicy.Prerequisites));
+                Assert.IsFalse(Validator.Validate(OwinRequestWithPath("/nothing"), requestPolicy.Prerequisites));
+            }
+
+            [Test]
+            public void Single_RequestPathDoesNotContain()
+            {
+                var requestPolicy = RequestPolicy
+                    .WithPrerequisites(
+                        RequestPrerequisite.Path.DoesNotContain("test")
+                    );
+
+                Assert.False(Validator.Validate(OwinRequestWithPath("/something/containing/test"), requestPolicy.Prerequisites));
+                Assert.IsTrue(Validator.Validate(OwinRequestWithPath("/nothing"), requestPolicy.Prerequisites));
+            }
+
             private static IOwinRequest OwinRequestWithPath(string path)
             {
                 return new OwinRequest { Path = new PathString(path) };
