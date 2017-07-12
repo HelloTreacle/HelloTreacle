@@ -11,10 +11,10 @@ namespace HelloTreacle
     public class HelloTreacleMiddleware : OwinMiddleware
     {
         private readonly RequestStore requestStore;
-        private readonly IEnumerable<RequestPolicy> policies;
+        private readonly IEnumerable<Policy> policies;
         private readonly IEnumerable<IEnumerable<string>> propertyKeysUsedInAcrossPolicies;
 
-        public HelloTreacleMiddleware(OwinMiddleware next, RequestStore requestStore, params RequestPolicy[] policies)
+        public HelloTreacleMiddleware(OwinMiddleware next, RequestStore requestStore, params Policy[] policies)
             : base(next)
         {
             //todo: guard against requestStore and policies being null
@@ -30,7 +30,7 @@ namespace HelloTreacle
             Console.WriteLine("Begin Request");
 
             //run all policies in order
-            var policiesStack = new Stack<RequestPolicy>(policies);
+            var policiesStack = new Stack<Policy>(policies);
 
             while (policiesStack.Count > 0)
             {

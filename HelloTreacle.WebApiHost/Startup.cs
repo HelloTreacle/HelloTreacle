@@ -27,7 +27,7 @@ namespace HelloTreacle.WebApiHost
 
             var requestPolicies = new[]
             {
-                new RequestPolicy(
+                new Policy(
                     TimeSpan.FromSeconds(10),
                     5,
                     new[] { "LocalIpAddress" },

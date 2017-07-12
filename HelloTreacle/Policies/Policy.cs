@@ -6,12 +6,12 @@ using Microsoft.Owin;
 
 namespace HelloTreacle.Policies
 {
-    public class RequestPolicy
+    public class Policy
     {
-        private RequestPolicy()
+        private Policy()
         { }
 
-        public RequestPolicy(TimeSpan timeSpan, int frequencyThreshold, IEnumerable<string> requestProperties, Action<IOwinContext> onPolicyViolation)
+        public Policy(TimeSpan timeSpan, int frequencyThreshold, IEnumerable<string> requestProperties, Action<IOwinContext> onPolicyViolation)
         {
             TimeSpan = timeSpan;
             FrequencyThreshold = frequencyThreshold;
@@ -42,9 +42,9 @@ namespace HelloTreacle.Policies
 
         public IEnumerable<Prerequisite> Prerequisites { get; set; }
 
-        public static RequestPolicy WithPrerequisites(params Prerequisite[] prerequisites)
+        public static Policy WithPrerequisites(params Prerequisite[] prerequisites)
         {
-            var requestPolicy = new RequestPolicy
+            var requestPolicy = new Policy
             {
                 Prerequisites = prerequisites
             };

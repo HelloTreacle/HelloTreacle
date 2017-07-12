@@ -7,7 +7,7 @@ namespace HelloTreacle
 {
     public static class HelloTreacleMiddlewareHandler
     {
-        public static IAppBuilder UseHelloTreacle(this IAppBuilder app, IEnumerable<RequestPolicy> requestPolicies, RequestStore requestStore = null)
+        public static IAppBuilder UseHelloTreacle(this IAppBuilder app, IEnumerable<Policy> requestPolicies, RequestStore requestStore = null)
         {
             if (requestStore == null)
                 requestStore = new InMemoryRequestStore();

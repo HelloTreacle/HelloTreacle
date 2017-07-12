@@ -22,7 +22,7 @@ namespace HelloTreacle.Tests.Policies.Prerequisites
             [Test]
             public void Single_RequestPathEquals()
             {
-                var requestPolicy = RequestPolicy
+                var requestPolicy = Policy
                     .WithPrerequisites(
                         RequestPrerequisite.Path.Equals("/test")
                     );
@@ -34,7 +34,7 @@ namespace HelloTreacle.Tests.Policies.Prerequisites
             [Test]
             public void Multiple_RequestPathEquals()
             {
-                var requestPolicy = RequestPolicy
+                var requestPolicy = Policy
                     .WithPrerequisites(
                         RequestPrerequisite.Path.Equals("/test"),
                         RequestPrerequisite.Path.Equals("/test2")
@@ -48,7 +48,7 @@ namespace HelloTreacle.Tests.Policies.Prerequisites
             [Test]
             public void Mixed_RequestPathEquals_With_RequestPathNotEquals()
             {
-                var requestPolicy = RequestPolicy
+                var requestPolicy = Policy
                     .WithPrerequisites(
                         RequestPrerequisite.Path.Equals("/test"),
                         RequestPrerequisite.Path.Equals("/test2"),
@@ -63,7 +63,7 @@ namespace HelloTreacle.Tests.Policies.Prerequisites
             [Test]
             public void Single_RequestPathContains()
             {
-                var requestPolicy = RequestPolicy
+                var requestPolicy = Policy
                     .WithPrerequisites(
                         RequestPrerequisite.Path.Contains("test")
                     );
@@ -75,7 +75,7 @@ namespace HelloTreacle.Tests.Policies.Prerequisites
             [Test]
             public void Single_RequestPathDoesNotContain()
             {
-                var requestPolicy = RequestPolicy
+                var requestPolicy = Policy
                     .WithPrerequisites(
                         RequestPrerequisite.Path.DoesNotContain("test")
                     );
